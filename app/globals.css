@@ -5,6 +5,7 @@
 :root {
   --background: #f9fafb;
   --foreground: #1a1a1a;
+  color-scheme: light only; /* lock to light — never auto-invert for dark mode */
 }
 
 body {
