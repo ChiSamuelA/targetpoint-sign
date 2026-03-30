@@ -26,14 +26,18 @@ export async function fetchImageAsBase64(url: string): Promise<string> {
   })
 }
 
+// Logos are served from the deployed Vercel URL so Outlook can fetch them
+// as normal hosted images — base64 logos are unreliable in Outlook Desktop.
+// The profile photo (photoBase64) remains base64 since it is user-uploaded.
+const HOSTED_BASE = 'https://targetpoint-sign.vercel.app'
+
 export async function getInlineImages(): Promise<SignatureImages> {
-  const [targetpoint, weExport, tripnbusiness, weXperience] = await Promise.all([
-    fetchImageAsBase64('/targetpoint.png'),
-    fetchImageAsBase64('/we-export.png'),
-    fetchImageAsBase64('/tripnbusiness.png'),
-    fetchImageAsBase64('/we-xperience.png'),
-  ])
-  return { targetpoint, weExport, tripnbusiness, weXperience }
+  return {
+    targetpoint:   `${HOSTED_BASE}/targetpoint.png`,
+    weExport:      `${HOSTED_BASE}/we-export.png`,
+    tripnbusiness: `${HOSTED_BASE}/tripnbusiness.png`,
+    weXperience:   `${HOSTED_BASE}/we-xperience.png`,
+  }
 }
 
 export function getPreviewImages(): SignatureImages {
