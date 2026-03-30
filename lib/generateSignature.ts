@@ -37,6 +37,9 @@ export async function getInlineImages(): Promise<SignatureImages> {
     weExport:      `${HOSTED_BASE}/we-export.png`,
     tripnbusiness: `${HOSTED_BASE}/tripnbusiness.png`,
     weXperience:   `${HOSTED_BASE}/we-xperience.png`,
+    facebook:      `${HOSTED_BASE}/facebook.png`,
+    instagram:     `${HOSTED_BASE}/instagram.png`,
+    linkedin:      `${HOSTED_BASE}/linkedin.png`,
   }
 }
 
@@ -46,5 +49,8 @@ export function getPreviewImages(): SignatureImages {
     weExport:      '/we-export.png',
     tripnbusiness: '/tripnbusiness.png',
     weXperience:   '/we-xperience.png',
+    facebook:      '/facebook.png',
+    instagram:     '/instagram.png',
+    linkedin:      '/linkedin.png',
   }
 }

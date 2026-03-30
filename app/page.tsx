@@ -19,6 +19,11 @@ const defaultData: SignatureData = {
     tripnbusiness: true,
     weXperience: true,
   },
+  socials: {
+    facebook: '',
+    instagram: '',
+    linkedin: '',
+  },
 }
 
 export default function Home() {

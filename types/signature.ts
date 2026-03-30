@@ -10,6 +10,11 @@ export interface SignatureData {
     tripnbusiness: boolean
     weXperience: boolean
   }
+  socials: {
+    facebook: string
+    instagram: string
+    linkedin: string
+  }
 }
 
 export interface SignatureImages {
@@ -17,4 +22,7 @@ export interface SignatureImages {
   weExport: string
   tripnbusiness: string
   weXperience: string
+  facebook: string
+  instagram: string
+  linkedin: string
 }

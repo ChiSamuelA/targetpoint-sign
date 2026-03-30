@@ -1,9 +1,10 @@
 // Light — white body, 5px purple left accent, dark text, purple TargetPoint badge
 import type { SignatureData, SignatureImages } from '@/types/signature'
-import { BRAND, tpBadge, contactRow, productBanner } from './shared'
+import { BRAND, tpBadge, contactRow, productBanner, whatsappHref, socialIconsRow } from './shared'
 
 export function buildLight(data: SignatureData, images: SignatureImages): string {
-  const { fullName, role, phone, email, photoBase64, products } = data
+  const { fullName, role, phone, email, photoBase64, products, socials } = data
+  const hasSocials = !!(socials.facebook || socials.instagram || socials.linkedin)
   // TDs in main row: accent(1) + [photo?](1) + center(1) + divider(1) + contact(1)
   const colCount = photoBase64 ? 5 : 4
 
@@ -59,8 +60,9 @@ export function buildLight(data: SignatureData, images: SignatureImages): string
       padding-bottom:18px;padding-left:20px;" valign="middle">
     <table cellpadding="0" cellspacing="0" border="0"
       style="border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt;">
-      ${phone ? contactRow('&#9742;', `tel:${phone}`, phone, { textColor: '#374151', badgeColor: BRAND, bottomPad: !!email }) : ''}
+      ${phone ? contactRow('&#9742;', whatsappHref(phone), phone, { textColor: '#374151', badgeColor: BRAND, bottomPad: !!(email || hasSocials) }) : ''}
       ${email ? contactRow('&#9993;', `mailto:${email}`, email, { textColor: '#374151', badgeColor: BRAND, bottomPad: false }) : ''}
+      ${socialIconsRow(socials, images)}
     </table>
   </td>`
 

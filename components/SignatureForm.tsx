@@ -1,7 +1,7 @@
 'use client'
 
 import { useRef, useState } from 'react'
-import { User, Briefcase, Mail, Upload, X } from 'lucide-react'
+import { User, Briefcase, Mail, Upload, X, Link } from 'lucide-react'
 import { parsePhoneNumber, isValidPhoneNumber } from 'libphonenumber-js'
 import { cn } from '@/lib/utils'
 import type { SignatureData } from '@/types/signature'
@@ -188,6 +188,38 @@ export default function SignatureForm({ data, onChange }: Props) {
           {data.phone && (
             <p className="text-[11px] text-purple-500 mt-1 ml-1">{data.phone}</p>
           )}
+        </div>
+
+        <div className="h-px bg-gray-100" />
+
+        {/* ── Social Media ─────────────────────────────────────────────────────── */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-3">Social Media</label>
+          <div className="space-y-3">
+            {([
+              { key: 'linkedin'  as const, icon: Link, placeholder: 'https://linkedin.com/in/yourname',    color: '#0077b5' },
+              { key: 'instagram' as const, icon: Link, placeholder: 'https://instagram.com/yourhandle',    color: '#e1306c' },
+              { key: 'facebook'  as const, icon: Link, placeholder: 'https://facebook.com/yourprofile',   color: '#1877f2' },
+            ] as const).map(({ key, icon: Icon, placeholder }) => (
+              <div key={key} className="relative">
+                <Icon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+                <input
+                  type="url"
+                  value={data.socials[key]}
+                  onChange={(e) =>
+                    onChange({ ...data, socials: { ...data.socials, [key]: e.target.value } })
+                  }
+                  placeholder={placeholder}
+                  className="w-full pl-9 pr-4 py-2.5 text-sm border border-gray-200 rounded-lg
+                             focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent
+                             transition-shadow placeholder:text-gray-300 text-gray-800"
+                />
+              </div>
+            ))}
+          </div>
+          <p className="text-xs text-gray-400 mt-2">
+            All optional — only filled links appear in the signature
+          </p>
         </div>
 
         <div className="h-px bg-gray-100" />

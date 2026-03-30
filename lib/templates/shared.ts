@@ -114,3 +114,51 @@ export function productBanner(
     </td>
   </tr>`
 }
+
+// ── WhatsApp link helper ───────────────────────────────────────────────────────
+export function whatsappHref(phone: string): string {
+  return `https://wa.me/${phone.replace(/[^0-9]/g, '')}`
+}
+
+// ── Social media icon row ──────────────────────────────────────────────────────
+// Only renders platforms the user has filled in. Order: LinkedIn → Instagram → Facebook.
+// Each icon is a 28×28 colored badge with the white platform icon inside.
+export function socialIconsRow(
+  socials: { facebook: string; instagram: string; linkedin: string },
+  images: SignatureImages
+): string {
+  const active = [
+    socials.linkedin  ? { url: socials.linkedin,  src: images.linkedin,  bg: '#0077b5', alt: 'LinkedIn'  } : null,
+    socials.instagram ? { url: socials.instagram, src: images.instagram, bg: '#e1306c', alt: 'Instagram' } : null,
+    socials.facebook  ? { url: socials.facebook,  src: images.facebook,  bg: '#1877f2', alt: 'Facebook'  } : null,
+  ].filter((s): s is NonNullable<typeof s> => s !== null)
+
+  if (!active.length) return ''
+
+  const cells = active.map(s =>
+    `<td style="padding-right:5px;">
+      <a href="${s.url}" target="_blank" style="text-decoration:none;">
+        <table cellpadding="0" cellspacing="0" border="0"
+          style="border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt;">
+          <tr>
+            <td width="28" height="28"
+              style="width:28px;height:28px;background-color:${s.bg};border-radius:4px;
+                     padding-top:6px;padding-right:6px;padding-bottom:6px;padding-left:6px;">
+              <img src="${s.src}" width="16" height="16" border="0"
+                style="display:block;width:16px;height:16px;" alt="${s.alt}">
+            </td>
+          </tr>
+        </table>
+      </a>
+    </td>`
+  ).join('')
+
+  return `<tr>
+    <td style="padding-top:8px;">
+      <table cellpadding="0" cellspacing="0" border="0"
+        style="border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt;">
+        <tr>${cells}</tr>
+      </table>
+    </td>
+  </tr>`
+}

@@ -1,11 +1,12 @@
 // Classic — full dark purple body, white text, circular photo with white border
 import type { SignatureData, SignatureImages } from '@/types/signature'
-import { BRAND, tpBadge, contactRow, productBanner } from './shared'
+import { BRAND, tpBadge, contactRow, productBanner, whatsappHref, socialIconsRow } from './shared'
 
 const C_DIVIDER = '#9575ff'
 
 export function buildClassic(data: SignatureData, images: SignatureImages): string {
-  const { fullName, role, phone, email, photoBase64, products } = data
+  const { fullName, role, phone, email, photoBase64, products, socials } = data
+  const hasSocials = !!(socials.facebook || socials.instagram || socials.linkedin)
   // TDs in main row: [photo?] + center + divider + contact = 3 or 4
   const colCount = photoBase64 ? 4 : 3
 
@@ -56,8 +57,9 @@ export function buildClassic(data: SignatureData, images: SignatureImages): stri
       padding-bottom:20px;padding-left:20px;" valign="middle">
     <table cellpadding="0" cellspacing="0" border="0"
       style="border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt;">
-      ${phone ? contactRow('&#9742;', `tel:${phone}`, phone, { bottomPad: !!email }) : ''}
+      ${phone ? contactRow('&#9742;', whatsappHref(phone), phone, { bottomPad: !!(email || hasSocials) }) : ''}
       ${email ? contactRow('&#9993;', `mailto:${email}`, email, { bottomPad: false }) : ''}
+      ${socialIconsRow(socials, images)}
     </table>
   </td>`
 
