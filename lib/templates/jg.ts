@@ -115,9 +115,9 @@ export function buildJG(data: SignatureData, images: SignatureImages): string {
 
   // Row: social icons
   const socialPlatforms = [
-    socials.linkedin  ? { url: socials.linkedin,  src: images.iconLinkedin,  alt: 'LinkedIn'  } : null,
-    socials.instagram ? { url: socials.instagram, src: images.iconInstagram, alt: 'Instagram' } : null,
-    socials.facebook  ? { url: socials.facebook,  src: images.iconFacebook,  alt: 'Facebook'  } : null,
+    socials.linkedin  ? { url: socials.linkedin,  src: images.linkedin,  alt: 'LinkedIn'  } : null,
+    socials.instagram ? { url: socials.instagram, src: images.instagram, alt: 'Instagram' } : null,
+    socials.facebook  ? { url: socials.facebook,  src: images.facebook,  alt: 'Facebook'  } : null,
   ].filter((s): s is NonNullable<typeof s> => s !== null)
 
   const socialCells = socialPlatforms.map(s =>
