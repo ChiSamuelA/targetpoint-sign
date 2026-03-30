@@ -62,7 +62,7 @@ export function getPreviewImages(): SignatureImages {
     facebook:         '/facebook.png',
     instagram:        '/instagram.png',
     linkedin:         '/linkedin.png',
-    jgLogo:           '/JD.png',
+    jgLogo:           '/JG.png',
     targetpointFav:   '/targetpoint-fav.png',
     tripnbusinessFav: '/tripnbusiness-fav.png',
     weExportFav:      '/we-export-fav.png',
