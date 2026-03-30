@@ -50,6 +50,9 @@ export async function getInlineImages(): Promise<SignatureImages> {
     iconInstagram:    `${HOSTED_BASE}/icon-instagram.png`,
     iconFacebook:     `${HOSTED_BASE}/icon-facebook.png`,
     iconLinkedin:     `${HOSTED_BASE}/icon-linkedin.png`,
+    emailIcon:        `${HOSTED_BASE}/email.png`,
+    globeIcon:        `${HOSTED_BASE}/globe.png`,
+    appelIcon:        `${HOSTED_BASE}/appel.png`,
   }
 }
 
@@ -62,7 +65,7 @@ export function getPreviewImages(): SignatureImages {
     facebook:         '/facebook.png',
     instagram:        '/instagram.png',
     linkedin:         '/linkedin.png',
-    jgLogo:           '/JG.png',
+    jgLogo:           '/JG\.png',
     targetpointFav:   '/targetpoint-fav.png',
     tripnbusinessFav: '/tripnbusiness-fav.png',
     weExportFav:      '/we-export-fav.png',
@@ -70,5 +73,8 @@ export function getPreviewImages(): SignatureImages {
     iconInstagram:    '/icon-instagram.png',
     iconFacebook:     '/icon-facebook.png',
     iconLinkedin:     '/icon-linkedin.png',
+    emailIcon:        '/email.png',
+    globeIcon:        '/globe.png',
+    appelIcon:        '/appel.png',
   }
 }

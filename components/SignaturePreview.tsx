@@ -7,9 +7,10 @@ import type { SignatureData } from '@/types/signature'
 
 interface Props {
   data: SignatureData
+  isValid?: boolean
 }
 
-export default function SignaturePreview({ data }: Props) {
+export default function SignaturePreview({ data, isValid = true }: Props) {
   const html = useMemo(
     () => buildSignatureHTML(data, getPreviewImages()),
     [data]
@@ -59,7 +60,7 @@ export default function SignaturePreview({ data }: Props) {
         </div>
       </div>
 
-      <CopyButton data={data} />
+      <CopyButton data={data} isValid={isValid} />
 
       <p className="text-xs text-center text-gray-400">
         All logos are embedded as base64 on copy — no external image hosting needed.

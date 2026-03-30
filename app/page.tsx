@@ -28,7 +28,8 @@ const defaultData: SignatureData = {
 }
 
 export default function Home() {
-  const [data, setData] = useState<SignatureData>(defaultData)
+  const [data, setData]       = useState<SignatureData>(defaultData)
+  const [isValid, setIsValid] = useState(true)
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -57,9 +58,9 @@ export default function Home() {
 
       <main className="max-w-6xl mx-auto px-6 py-6">
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 items-start">
-          <SignatureForm data={data} onChange={setData} />
+          <SignatureForm data={data} onChange={setData} onValidationChange={setIsValid} />
           <div className="xl:sticky xl:top-8">
-            <SignaturePreview data={data} />
+            <SignaturePreview data={data} isValid={isValid} />
           </div>
         </div>
       </main>

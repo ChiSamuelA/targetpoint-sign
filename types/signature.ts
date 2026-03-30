@@ -34,4 +34,7 @@ export interface SignatureImages {
   iconInstagram: string
   iconFacebook: string
   iconLinkedin: string
+  emailIcon: string
+  globeIcon: string
+  appelIcon: string
 }

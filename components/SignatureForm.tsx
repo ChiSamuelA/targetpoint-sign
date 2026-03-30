@@ -9,6 +9,7 @@ import type { SignatureData } from '@/types/signature'
 interface Props {
   data: SignatureData
   onChange: (data: SignatureData) => void
+  onValidationChange: (isValid: boolean) => void
 }
 
 const DIAL_CODES = [
@@ -35,10 +36,37 @@ const TEXT_FIELDS = [
   { field: 'website'  as const, label: 'Website',          icon: Globe,     placeholder: 'https://yourwebsite.com',   type: 'url'   },
 ]
 
-export default function SignatureForm({ data, onChange }: Props) {
+function isValidEmail(val: string) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)
+}
+
+function isValidUrl(val: string) {
+  try { new URL(val); return true } catch { return false }
+}
+
+export default function SignatureForm({ data, onChange, onValidationChange }: Props) {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [dialCode, setDialCode]       = useState('+971')
   const [localNumber, setLocalNumber] = useState('')
+  const [errors, setErrors]           = useState<Record<string, string>>({})
+
+  const applyError = (key: string, message: string | null) => {
+    const next = { ...errors }
+    if (message) next[key] = message
+    else delete next[key]
+    setErrors(next)
+    onValidationChange(Object.keys(next).length === 0)
+  }
+
+  const validateEmail = (key: string, val: string) => {
+    if (val && !isValidEmail(val)) applyError(key, 'Enter a valid email address')
+    else applyError(key, null)
+  }
+
+  const validateUrl = (key: string, val: string) => {
+    if (val && !isValidUrl(val)) applyError(key, 'Enter a valid URL starting with https://')
+    else applyError(key, null)
+  }
 
   // setField excludes phone (handled separately), photoBase64 and templateId
   const setField = (
@@ -80,6 +108,9 @@ export default function SignatureForm({ data, onChange }: Props) {
     setLocalNumber(e.target.value)
     updatePhone(dialCode, e.target.value)
   }
+
+  const inputClass = (key: string, base: string) =>
+    cn(base, errors[key] ? 'border-red-400 focus:ring-red-400' : 'border-gray-200 focus:ring-purple-500')
 
   return (
     <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
@@ -140,7 +171,7 @@ export default function SignatureForm({ data, onChange }: Props) {
 
         <div className="h-px bg-gray-100" />
 
-        {/* ── Text Fields (name, role, email) ──────────────────────────────────── */}
+        {/* ── Text Fields (name, role, email, website) ─────────────────────────── */}
         {TEXT_FIELDS.map(({ field, label, icon: Icon, placeholder, type }) => (
           <div key={field}>
             <label className="block text-sm font-medium text-gray-700 mb-1.5">{label}</label>
@@ -150,12 +181,19 @@ export default function SignatureForm({ data, onChange }: Props) {
                 type={type}
                 value={data[field]}
                 onChange={(e) => setField(field, e.target.value)}
+                onBlur={(e) => {
+                  if (type === 'email') validateEmail(field, e.target.value)
+                  if (type === 'url')   validateUrl(field, e.target.value)
+                }}
                 placeholder={placeholder}
-                className="w-full pl-9 pr-4 py-2.5 text-sm border border-gray-200 rounded-lg
-                           focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent
-                           transition-shadow placeholder:text-gray-300 text-gray-800"
+                className={inputClass(field,
+                  'w-full pl-9 pr-4 py-2.5 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:border-transparent transition-shadow placeholder:text-gray-300 text-gray-800'
+                )}
               />
             </div>
+            {errors[field] && (
+              <p className="text-xs text-red-500 mt-1 ml-1">{errors[field]}</p>
+            )}
           </div>
         ))}
 
@@ -198,23 +236,29 @@ export default function SignatureForm({ data, onChange }: Props) {
           <label className="block text-sm font-medium text-gray-700 mb-3">Social Media</label>
           <div className="space-y-3">
             {([
-              { key: 'linkedin'  as const, icon: Link, placeholder: 'https://linkedin.com/in/yourname',    color: '#0077b5' },
-              { key: 'instagram' as const, icon: Link, placeholder: 'https://instagram.com/yourhandle',    color: '#e1306c' },
-              { key: 'facebook'  as const, icon: Link, placeholder: 'https://facebook.com/yourprofile',   color: '#1877f2' },
+              { key: 'linkedin'  as const, icon: Link, placeholder: 'https://linkedin.com/in/yourname'  },
+              { key: 'instagram' as const, icon: Link, placeholder: 'https://instagram.com/yourhandle'  },
+              { key: 'facebook'  as const, icon: Link, placeholder: 'https://facebook.com/yourprofile'  },
             ] as const).map(({ key, icon: Icon, placeholder }) => (
-              <div key={key} className="relative">
-                <Icon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
-                <input
-                  type="url"
-                  value={data.socials[key]}
-                  onChange={(e) =>
-                    onChange({ ...data, socials: { ...data.socials, [key]: e.target.value } })
-                  }
-                  placeholder={placeholder}
-                  className="w-full pl-9 pr-4 py-2.5 text-sm border border-gray-200 rounded-lg
-                             focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent
-                             transition-shadow placeholder:text-gray-300 text-gray-800"
-                />
+              <div key={key}>
+                <div className="relative">
+                  <Icon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+                  <input
+                    type="url"
+                    value={data.socials[key]}
+                    onChange={(e) =>
+                      onChange({ ...data, socials: { ...data.socials, [key]: e.target.value } })
+                    }
+                    onBlur={(e) => validateUrl(`socials.${key}`, e.target.value)}
+                    placeholder={placeholder}
+                    className={inputClass(`socials.${key}`,
+                      'w-full pl-9 pr-4 py-2.5 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:border-transparent transition-shadow placeholder:text-gray-300 text-gray-800'
+                    )}
+                  />
+                </div>
+                {errors[`socials.${key}`] && (
+                  <p className="text-xs text-red-500 mt-1 ml-1">{errors[`socials.${key}`]}</p>
+                )}
               </div>
             ))}
           </div>

@@ -1,6 +1,11 @@
 // JG — white body, circular gold-bordered photo, indigo name, gold social circles, indigo banner
 import type { SignatureData, SignatureImages } from '@/types/signature'
 
+function contactIcon(src: string, alt: string): string {
+  return `<img src="${src}" width="16" height="16" border="0"
+    style="display:block;width:16px;height:16px;" alt="${alt}">`
+}
+
 const INDIGO = '#2f25ba'
 const GOLD   = '#c79437'
 
@@ -45,9 +50,8 @@ export function buildJG(data: SignatureData, images: SignatureImages): string {
         style="border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt;">
         <tr>
           <td width="24" valign="middle"
-            style="width:24px;font-size:16px;color:#555555;vertical-align:middle;
-                   font-family:Arial,sans-serif;line-height:1;">
-            &#9993;
+            style="width:24px;vertical-align:middle;">
+            ${contactIcon(images.emailIcon, 'Email')}
           </td>
           <td valign="middle"
             style="vertical-align:middle;font-family:Arial,sans-serif;font-size:13px;
@@ -70,9 +74,8 @@ export function buildJG(data: SignatureData, images: SignatureImages): string {
         style="border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt;">
         <tr>
           <td width="24" valign="middle"
-            style="width:24px;font-size:16px;color:#555555;vertical-align:middle;
-                   font-family:Arial,sans-serif;line-height:1;">
-            &#128279;
+            style="width:24px;vertical-align:middle;">
+            ${contactIcon(images.globeIcon, 'Website')}
           </td>
           <td valign="middle"
             style="vertical-align:middle;font-family:Arial,sans-serif;font-size:13px;
@@ -95,9 +98,8 @@ export function buildJG(data: SignatureData, images: SignatureImages): string {
         style="border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt;">
         <tr>
           <td width="24" valign="middle"
-            style="width:24px;font-size:16px;color:#555555;vertical-align:middle;
-                   font-family:Arial,sans-serif;line-height:1;">
-            &#9990;
+            style="width:24px;vertical-align:middle;">
+            ${contactIcon(images.appelIcon, 'Phone')}
           </td>
           <td valign="middle"
             style="vertical-align:middle;font-family:Arial,sans-serif;font-size:13px;
@@ -182,32 +184,29 @@ export function buildJG(data: SignatureData, images: SignatureImages): string {
            mso-table-lspace:0pt;mso-table-rspace:0pt;">
     <a href="https://josephinegarrickltd.com" target="_blank"
       style="display:block;text-decoration:none;">
-      <img src="${images.jgLogo}" height="110"
-        style="display:block;margin-left:auto;height:110px;" alt="Josephine Garrick LTD">
+      <img src="${images.jgLogo}" width="160" height="80"
+        style="display:block;margin-left:auto;width:160px;height:80px;object-fit:contain;" alt="Josephine Garrick LTD">
     </a>
   </td>`
 
   // ── BOTTOM BANNER ────────────────────────────────────────────────────────────
   const brandCells = BRANDS.map(b => {
     const favSrc = images[b.fav as keyof SignatureImages]
-    return `<td style="text-align:center;width:25%;vertical-align:middle;" valign="middle" align="center">
+    return `<td style="text-align:center;width:25%;vertical-align:middle;padding-left:4px;padding-right:4px;" valign="middle" align="center">
       <table cellpadding="0" cellspacing="0" border="0"
         style="border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt;margin:0 auto;">
         <tr>
-          <td align="center" style="padding-bottom:6px;text-align:center;">
-            <a href="${b.url}" target="_blank"
-              style="display:block;text-decoration:none;">
-              <img src="${favSrc}" height="28"
-                style="display:block;margin:0 auto;height:28px;" alt="${b.label}">
+          <td valign="middle" style="vertical-align:middle;padding-right:6px;">
+            <a href="${b.url}" target="_blank" style="display:block;text-decoration:none;">
+              <img src="${favSrc}" width="22" height="22"
+                style="display:block;width:22px;height:22px;" alt="${b.label}">
             </a>
           </td>
-        </tr>
-        <tr>
-          <td align="center" style="text-align:center;">
+          <td valign="middle" style="vertical-align:middle;white-space:nowrap;">
             <a href="${b.url}" target="_blank"
-              style="color:#ffffff;font-family:Arial,sans-serif;font-size:11px;
-                     font-weight:bold;text-decoration:underline;letter-spacing:0.5px;
-                     text-transform:uppercase;">
+              style="color:#ffffff;font-family:Arial,sans-serif;font-size:10px;
+                     font-weight:bold;text-decoration:underline;letter-spacing:0.3px;
+                     text-transform:uppercase;white-space:nowrap;">
               ${b.label}
             </a>
           </td>
@@ -230,10 +229,10 @@ export function buildJG(data: SignatureData, images: SignatureImages): string {
     </td>
   </tr>`
 
-  return `<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="680"
+  return `<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="700"
     style="border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt;
            background-color:#ffffff;font-family:Arial,sans-serif;
-           color-scheme:light;width:680px;">
+           color-scheme:light;width:700px;">
     <tr>
       ${photoCell}
       ${infoCell}

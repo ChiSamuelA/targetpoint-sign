@@ -8,11 +8,12 @@ import type { SignatureData } from '@/types/signature'
 
 interface Props {
   data: SignatureData
+  isValid?: boolean
 }
 
 type CopyState = 'idle' | 'loading' | 'success' | 'error'
 
-export default function CopyButton({ data }: Props) {
+export default function CopyButton({ data, isValid = true }: Props) {
   const [state, setState] = useState<CopyState>('idle')
 
   const handleCopy = async () => {
@@ -49,14 +50,15 @@ export default function CopyButton({ data }: Props) {
     <div className="space-y-2">
       <button
         onClick={handleCopy}
-        disabled={state === 'loading'}
+        disabled={!isValid || state === 'loading'}
         className={cn(
           'w-full flex items-center justify-center gap-2.5 py-3.5 px-6 rounded-xl font-semibold text-sm transition-all',
-          state === 'idle' &&
+          !isValid && 'bg-gray-200 text-gray-400 cursor-not-allowed',
+          isValid && state === 'idle' &&
             'bg-purple-700 hover:bg-purple-800 text-white shadow-md hover:shadow-lg active:scale-[0.98]',
-          state === 'loading' && 'bg-purple-400 text-white cursor-wait',
-          state === 'success' && 'bg-emerald-600 text-white',
-          state === 'error' && 'bg-red-500 text-white'
+          isValid && state === 'loading' && 'bg-purple-400 text-white cursor-wait',
+          isValid && state === 'success' && 'bg-emerald-600 text-white',
+          isValid && state === 'error' && 'bg-red-500 text-white'
         )}
       >
         {state === 'idle' && (
@@ -85,7 +87,13 @@ export default function CopyButton({ data }: Props) {
         )}
       </button>
 
-      {state === 'success' && (
+      {!isValid && (
+        <p className="text-xs text-center text-red-500 leading-relaxed">
+          <strong>Fix the invalid fields above</strong> — one or more emails or URLs are incorrectly formatted.
+        </p>
+      )}
+
+      {isValid && state === 'success' && (
         <p className="text-xs text-center text-gray-500 leading-relaxed">
           Open Outlook &rarr; <strong>File &rarr; Options &rarr; Mail &rarr; Signatures</strong>
           {' '}and paste with{' '}
@@ -95,7 +103,7 @@ export default function CopyButton({ data }: Props) {
         </p>
       )}
 
-      {state === 'error' && (
+      {isValid && state === 'error' && (
         <p className="text-xs text-center text-red-400 leading-relaxed">
           Browser blocked clipboard access. The page must be served over{' '}
           <strong>HTTPS</strong> or <strong>localhost</strong> for the
