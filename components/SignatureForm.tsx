@@ -1,7 +1,7 @@
 'use client'
 
 import { useRef, useState } from 'react'
-import { User, Briefcase, Mail, Upload, X, Link } from 'lucide-react'
+import { User, Briefcase, Mail, Globe, Upload, X, Link } from 'lucide-react'
 import { parsePhoneNumber, isValidPhoneNumber } from 'libphonenumber-js'
 import { cn } from '@/lib/utils'
 import type { SignatureData } from '@/types/signature'
@@ -29,9 +29,10 @@ const PRODUCTS = [
 ]
 
 const TEXT_FIELDS = [
-  { field: 'fullName' as const, label: 'Full Name',       icon: User,     placeholder: 'Ahmed Al-Rashidi',          type: 'text'  },
-  { field: 'role'     as const, label: 'Role / Job Title', icon: Briefcase, placeholder: 'Senior Marketing Manager', type: 'text'  },
-  { field: 'email'    as const, label: 'Email Address',   icon: Mail,     placeholder: 'ahmed@targetpoint.com',     type: 'email' },
+  { field: 'fullName' as const, label: 'Full Name',        icon: User,      placeholder: 'Ahmed Al-Rashidi',          type: 'text'  },
+  { field: 'role'     as const, label: 'Role / Job Title', icon: Briefcase, placeholder: 'Senior Marketing Manager',  type: 'text'  },
+  { field: 'email'    as const, label: 'Email Address',    icon: Mail,      placeholder: 'ahmed@targetpoint.com',     type: 'email' },
+  { field: 'website'  as const, label: 'Website',          icon: Globe,     placeholder: 'https://yourwebsite.com',   type: 'url'   },
 ]
 
 export default function SignatureForm({ data, onChange }: Props) {
@@ -41,7 +42,7 @@ export default function SignatureForm({ data, onChange }: Props) {
 
   // setField excludes phone (handled separately), photoBase64 and templateId
   const setField = (
-    field: keyof Omit<SignatureData, 'products' | 'photoBase64' | 'templateId' | 'phone'>,
+    field: keyof Omit<SignatureData, 'products' | 'photoBase64' | 'templateId' | 'phone' | 'socials'>,
     value: string
   ) => onChange({ ...data, [field]: value })
 

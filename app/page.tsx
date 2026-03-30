@@ -12,6 +12,7 @@ const defaultData: SignatureData = {
   role: '',
   phone: '',
   email: '',
+  website: '',
   photoBase64: null,
   templateId: 'classic',
   products: {

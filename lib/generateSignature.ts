@@ -3,6 +3,7 @@ import { buildClassic } from './templates/classic'
 import { buildLight }   from './templates/light'
 import { buildBold }    from './templates/bold'
 import { buildMono }    from './templates/mono'
+import { buildJG }      from './templates/jg'
 
 // ── Template router ────────────────────────────────────────────────────────────
 export function buildSignatureHTML(data: SignatureData, images: SignatureImages): string {
@@ -10,11 +11,12 @@ export function buildSignatureHTML(data: SignatureData, images: SignatureImages)
     case 'light':  return buildLight(data, images)
     case 'bold':   return buildBold(data, images)
     case 'mono':   return buildMono(data, images)
+    case 'jg':     return buildJG(data, images)
     default:       return buildClassic(data, images)
   }
 }
 
-// ── Image utilities (unchanged) ────────────────────────────────────────────────
+// ── Image utilities ────────────────────────────────────────────────────────────
 export async function fetchImageAsBase64(url: string): Promise<string> {
   const response = await fetch(url)
   const blob = await response.blob()
@@ -33,24 +35,40 @@ const HOSTED_BASE = 'https://targetpoint-sign.vercel.app'
 
 export async function getInlineImages(): Promise<SignatureImages> {
   return {
-    targetpoint:   `${HOSTED_BASE}/targetpoint.png`,
-    weExport:      `${HOSTED_BASE}/we-export.png`,
-    tripnbusiness: `${HOSTED_BASE}/tripnbusiness.png`,
-    weXperience:   `${HOSTED_BASE}/we-xperience.png`,
-    facebook:      `${HOSTED_BASE}/facebook.png`,
-    instagram:     `${HOSTED_BASE}/instagram.png`,
-    linkedin:      `${HOSTED_BASE}/linkedin.png`,
+    targetpoint:      `${HOSTED_BASE}/targetpoint.png`,
+    weExport:         `${HOSTED_BASE}/we-export.png`,
+    tripnbusiness:    `${HOSTED_BASE}/tripnbusiness.png`,
+    weXperience:      `${HOSTED_BASE}/we-xperience.png`,
+    facebook:         `${HOSTED_BASE}/facebook.png`,
+    instagram:        `${HOSTED_BASE}/instagram.png`,
+    linkedin:         `${HOSTED_BASE}/linkedin.png`,
+    jgLogo:           `${HOSTED_BASE}/JD.png`,
+    targetpointFav:   `${HOSTED_BASE}/targetpoint-fav.png`,
+    tripnbusinessFav: `${HOSTED_BASE}/tripnbusiness-fav.png`,
+    weExportFav:      `${HOSTED_BASE}/we-export-fav.png`,
+    weImportFav:      `${HOSTED_BASE}/we-import-fav.png`,
+    iconInstagram:    `${HOSTED_BASE}/icon-instagram.png`,
+    iconFacebook:     `${HOSTED_BASE}/icon-facebook.png`,
+    iconLinkedin:     `${HOSTED_BASE}/icon-linkedin.png`,
   }
 }
 
 export function getPreviewImages(): SignatureImages {
   return {
-    targetpoint:   '/targetpoint.png',
-    weExport:      '/we-export.png',
-    tripnbusiness: '/tripnbusiness.png',
-    weXperience:   '/we-xperience.png',
-    facebook:      '/facebook.png',
-    instagram:     '/instagram.png',
-    linkedin:      '/linkedin.png',
+    targetpoint:      '/targetpoint.png',
+    weExport:         '/we-export.png',
+    tripnbusiness:    '/tripnbusiness.png',
+    weXperience:      '/we-xperience.png',
+    facebook:         '/facebook.png',
+    instagram:        '/instagram.png',
+    linkedin:         '/linkedin.png',
+    jgLogo:           '/JD.png',
+    targetpointFav:   '/targetpoint-fav.png',
+    tripnbusinessFav: '/tripnbusiness-fav.png',
+    weExportFav:      '/we-export-fav.png',
+    weImportFav:      '/we-import-fav.png',
+    iconInstagram:    '/icon-instagram.png',
+    iconFacebook:     '/icon-facebook.png',
+    iconLinkedin:     '/icon-linkedin.png',
   }
 }
