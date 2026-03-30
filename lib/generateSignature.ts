@@ -42,7 +42,7 @@ export async function getInlineImages(): Promise<SignatureImages> {
     facebook:         `${HOSTED_BASE}/facebook.png`,
     instagram:        `${HOSTED_BASE}/instagram.png`,
     linkedin:         `${HOSTED_BASE}/linkedin.png`,
-    jgLogo:           `${HOSTED_BASE}/JD.png`,
+    jgLogo:           `${HOSTED_BASE}/JG.png`,
     targetpointFav:   `${HOSTED_BASE}/targetpoint-fav.png`,
     tripnbusinessFav: `${HOSTED_BASE}/tripnbusiness-fav.png`,
     weExportFav:      `${HOSTED_BASE}/we-export-fav.png`,
