@@ -32,7 +32,7 @@ export default function Home() {
   const [isValid, setIsValid] = useState(true)
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 overflow-x-hidden">
       <header className="bg-gradient-to-r from-purple-950 to-purple-800 shadow-xl">
         <div className="max-w-6xl mx-auto px-6 py-5 flex items-center gap-4">
           <Image

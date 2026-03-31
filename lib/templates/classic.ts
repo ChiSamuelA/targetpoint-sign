@@ -68,7 +68,7 @@ export function buildClassic(data: SignatureData, images: SignatureImages): stri
 
   return `<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="560"
     style="border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt;
-           background-color:${BRAND};border-radius:10px;color-scheme:light;
+           background-color:${BRAND};color-scheme:light;
            font-family:Arial,sans-serif;width:560px;">
     <tr>
       ${photoCell}

@@ -144,14 +144,14 @@ export function socialIconsRow(
 
   if (!active.length) return ''
 
-  const cells = active.map(s =>
-    `<td style="padding-right:5px;">
+  const cells = active.map((s, i) =>
+    `<td${i < active.length - 1 ? ' style="padding-right:5px;"' : ''}>
       <a href="${s.url}" target="_blank" style="text-decoration:none;">
         <table cellpadding="0" cellspacing="0" border="0"
           style="border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt;">
           <tr>
             <td width="28" height="28"
-              style="width:28px;height:28px;background-color:${s.bg};border-radius:4px;
+              style="width:28px;height:28px;background-color:${s.bg};
                      padding-top:6px;padding-right:6px;padding-bottom:6px;padding-left:6px;">
               <img src="${s.src}" width="16" height="16" border="0"
                 style="display:block;width:16px;height:16px;" alt="${s.alt}">

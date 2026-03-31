@@ -62,7 +62,7 @@ export function buildBold(data: SignatureData, images: SignatureImages): string 
 
   return `<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="560"
     style="border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt;
-           border-radius:10px;color-scheme:light;font-family:Arial,sans-serif;width:560px;">
+           color-scheme:light;font-family:Arial,sans-serif;width:560px;">
     <tr>
       ${leftCell}
       ${rightCell}

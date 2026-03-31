@@ -47,7 +47,7 @@ export function buildLight(data: SignatureData, images: SignatureImages): string
         </td>
       </tr>
       <tr>
-        <td>${tpBadge(images.targetpoint, BRAND)}</td>
+        <td>${tpBadge(images.targetpoint, '#ffffff')}</td>
       </tr>
     </table>
   </td>`
@@ -71,7 +71,7 @@ export function buildLight(data: SignatureData, images: SignatureImages): string
 
   return `<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="560"
     style="border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt;
-           background-color:#ffffff;border-radius:10px;border:1px solid #e5e7eb;
+           background-color:#ffffff;border:1px solid #e5e7eb;
            color-scheme:light;font-family:Arial,sans-serif;width:560px;">
     <tr>
       ${accentCell}
