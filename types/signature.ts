@@ -37,4 +37,7 @@ export interface SignatureImages {
   emailIcon: string
   globeIcon: string
   appelIcon: string
+  emailIconWh: string
+  globeIconWh: string
+  telephoneIconWh: string
 }

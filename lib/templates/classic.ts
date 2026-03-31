@@ -59,9 +59,9 @@ export function buildClassic(data: SignatureData, images: SignatureImages): stri
       padding-bottom:20px;padding-left:20px;" valign="middle">
     <table cellpadding="0" cellspacing="0" border="0"
       style="border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt;">
-      ${phone   ? contactRow(images.appelIcon, whatsappHref(phone),  phone,                    { bottomPad: !!(email || website || hasSocials) }) : ''}
-      ${email   ? contactRow(images.emailIcon, `mailto:${email}`,   clampText(email, 42),     { bottomPad: !!(website || hasSocials) }) : ''}
-      ${website ? contactRow(images.globeIcon, normalizeUrl(website), clampText(website, 42), { bottomPad: hasSocials }) : ''}
+      ${phone   ? contactRow(images.telephoneIconWh, whatsappHref(phone),   phone,                    { bottomPad: !!(email || website || hasSocials) }) : ''}
+      ${email   ? contactRow(images.emailIconWh,    `mailto:${email}`,     clampText(email, 42),     { bottomPad: !!(website || hasSocials) }) : ''}
+      ${website ? contactRow(images.globeIconWh,    normalizeUrl(website), clampText(website, 42),   { bottomPad: hasSocials }) : ''}
       ${socialIconsRow(socials, images)}
     </table>
   </td>`

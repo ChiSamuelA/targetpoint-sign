@@ -53,6 +53,9 @@ export async function getInlineImages(): Promise<SignatureImages> {
     emailIcon:        `${HOSTED_BASE}/email.png`,
     globeIcon:        `${HOSTED_BASE}/globe.png`,
     appelIcon:        `${HOSTED_BASE}/appel.png`,
+    emailIconWh:      `${HOSTED_BASE}/email-wh.png`,
+    globeIconWh:      `${HOSTED_BASE}/globe-wh.png`,
+    telephoneIconWh:  `${HOSTED_BASE}/telephone-wh.png`,
   }
 }
 
@@ -76,5 +79,8 @@ export function getPreviewImages(): SignatureImages {
     emailIcon:        '/email.png',
     globeIcon:        '/globe.png',
     appelIcon:        '/appel.png',
+    emailIconWh:      '/email-wh.png',
+    globeIconWh:      '/globe-wh.png',
+    telephoneIconWh:  '/telephone-wh.png',
   }
 }
