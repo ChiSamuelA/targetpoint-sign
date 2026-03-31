@@ -1,6 +1,6 @@
 // Classic — full dark purple body, white text, circular photo with white border
 import type { SignatureData, SignatureImages } from '@/types/signature'
-import { BRAND, tpBadge, contactRow, productBanner, whatsappHref, socialIconsRow, normalizeUrl } from './shared'
+import { BRAND, tpBadge, contactRow, productBanner, whatsappHref, socialIconsRow, normalizeUrl, clampText } from './shared'
 
 const C_DIVIDER = '#9575ff'
 
@@ -30,15 +30,17 @@ export function buildClassic(data: SignatureData, images: SignatureImages): stri
       <tr>
         <td style="font-family:Arial,sans-serif;font-size:18px;font-weight:bold;
                    color:#ffffff;line-height:24px;mso-line-height-rule:exactly;
-                   white-space:nowrap;padding-bottom:4px;">
-          ${fullName || 'Full Name'}
+                   max-width:200px;word-wrap:break-word;overflow-wrap:break-word;
+                   padding-bottom:4px;">
+          ${clampText(fullName || 'Full Name', 40)}
         </td>
       </tr>
       <tr>
         <td style="font-family:Arial,sans-serif;font-size:12px;color:#d4b8ff;
                    line-height:18px;mso-line-height-rule:exactly;
-                   white-space:nowrap;padding-bottom:14px;">
-          ${role || 'Job Title'}
+                   max-width:200px;word-wrap:break-word;overflow-wrap:break-word;
+                   padding-bottom:14px;">
+          ${clampText(role || 'Job Title', 50)}
         </td>
       </tr>
       <tr>
@@ -57,9 +59,9 @@ export function buildClassic(data: SignatureData, images: SignatureImages): stri
       padding-bottom:20px;padding-left:20px;" valign="middle">
     <table cellpadding="0" cellspacing="0" border="0"
       style="border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt;">
-      ${phone   ? contactRow('&#9742;', whatsappHref(phone),      phone,   { bottomPad: !!(email || website || hasSocials) }) : ''}
-      ${email   ? contactRow('&#9993;', `mailto:${email}`,         email,   { bottomPad: !!(website || hasSocials) }) : ''}
-      ${website ? contactRow('&#9632;', normalizeUrl(website),     website, { bottomPad: hasSocials }) : ''}
+      ${phone   ? contactRow(images.appelIcon, whatsappHref(phone),  phone,                    { bottomPad: !!(email || website || hasSocials) }) : ''}
+      ${email   ? contactRow(images.emailIcon, `mailto:${email}`,   clampText(email, 42),     { bottomPad: !!(website || hasSocials) }) : ''}
+      ${website ? contactRow(images.globeIcon, normalizeUrl(website), clampText(website, 42), { bottomPad: hasSocials }) : ''}
       ${socialIconsRow(socials, images)}
     </table>
   </td>`

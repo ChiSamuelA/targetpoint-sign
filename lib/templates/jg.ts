@@ -1,6 +1,6 @@
 // JG — white body, circular gold-bordered photo, indigo name, gold social circles, indigo banner
 import type { SignatureData, SignatureImages } from '@/types/signature'
-import { normalizeUrl } from './shared'
+import { normalizeUrl, clampText } from './shared'
 
 function contactIcon(src: string, alt: string): string {
   return `<img src="${src}" width="16" height="16" border="0"
@@ -56,11 +56,11 @@ export function buildJG(data: SignatureData, images: SignatureImages): string {
           </td>
           <td valign="middle"
             style="vertical-align:middle;font-family:Arial,sans-serif;font-size:13px;
-                   color:#333333;white-space:nowrap;">
+                   color:#333333;max-width:200px;word-break:break-all;overflow-wrap:break-word;">
             <a href="mailto:${email}"
               style="color:#333333;font-size:13px;text-decoration:none;
                      font-family:Arial,sans-serif;">
-              ${email}
+              ${clampText(email, 42)}
             </a>
           </td>
         </tr>
@@ -80,11 +80,11 @@ export function buildJG(data: SignatureData, images: SignatureImages): string {
           </td>
           <td valign="middle"
             style="vertical-align:middle;font-family:Arial,sans-serif;font-size:13px;
-                   color:#333333;white-space:nowrap;">
+                   color:#333333;max-width:200px;word-break:break-all;overflow-wrap:break-word;">
             <a href="${normalizeUrl(website)}" target="_blank"
               style="color:#333333;font-size:13px;text-decoration:none;
                      font-family:Arial,sans-serif;">
-              ${website}
+              ${clampText(website, 42)}
             </a>
           </td>
         </tr>
@@ -104,7 +104,7 @@ export function buildJG(data: SignatureData, images: SignatureImages): string {
           </td>
           <td valign="middle"
             style="vertical-align:middle;font-family:Arial,sans-serif;font-size:13px;
-                   color:#333333;white-space:nowrap;">
+                   color:#333333;max-width:200px;word-break:break-all;overflow-wrap:break-word;">
             <a href="tel:${phone.replace(/\s/g, '')}"
               style="color:#333333;font-size:13px;text-decoration:none;
                      font-family:Arial,sans-serif;">
@@ -160,15 +160,17 @@ export function buildJG(data: SignatureData, images: SignatureImages): string {
       <tr>
         <td style="font-family:Arial,sans-serif;font-size:22px;font-weight:bold;
                    color:${INDIGO};line-height:28px;mso-line-height-rule:exactly;
-                   white-space:nowrap;padding-bottom:2px;">
-          ${fullName || 'Full Name'}
+                   max-width:260px;word-wrap:break-word;overflow-wrap:break-word;
+                   padding-bottom:2px;">
+          ${clampText(fullName || 'Full Name', 40)}
         </td>
       </tr>
       <tr>
         <td style="font-family:Arial,sans-serif;font-size:13px;color:#888888;
                    line-height:20px;mso-line-height-rule:exactly;
-                   white-space:nowrap;padding-bottom:16px;">
-          ${role || 'Job Title'}
+                   max-width:260px;word-wrap:break-word;overflow-wrap:break-word;
+                   padding-bottom:16px;">
+          ${clampText(role || 'Job Title', 50)}
         </td>
       </tr>
       ${emailRow}

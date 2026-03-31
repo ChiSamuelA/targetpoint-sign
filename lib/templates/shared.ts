@@ -5,6 +5,12 @@ export const BRAND       = '#7f51ff'
 export const BANNER_BG   = '#6438cc'   // non-negotiable: product banner always this
 export const BANNER_RULE = '#5e35b1'   // hairline between body and banner
 
+// ── Text clamp — truncate long strings so cells never expand beyond 2 lines ────
+export function clampText(value: string, maxChars: number): string {
+  if (!value || value.length <= maxChars) return value
+  return value.slice(0, maxChars).trimEnd() + '\u2026'
+}
+
 // ── TargetPoint logo badge ─────────────────────────────────────────────────────
 // targetpoint.png has transparent bg → must always sit inside a solid pill.
 // bgColor defaults to white; pass BRAND (#7f51ff) for templates with dark bodies.
@@ -24,33 +30,31 @@ export function tpBadge(src: string, bgColor = '#ffffff'): string {
   </table>`
 }
 
-// ── Contact row — icon badge + linked label ────────────────────────────────────
+// ── Contact row — PNG icon image + linked label ────────────────────────────────
 interface ContactOpts {
   textColor?: string   // label + link color
-  badgeColor?: string  // icon badge background
   bottomPad?: boolean
 }
 export function contactRow(
-  entity: string,
+  iconSrc: string,
   href: string,
   label: string,
-  { textColor = '#ffffff', badgeColor = '#9575ff', bottomPad = true }: ContactOpts = {}
+  { textColor = '#ffffff', bottomPad = true }: ContactOpts = {}
 ): string {
   return `<tr>
     <td${bottomPad ? ' style="padding-bottom:8px;"' : ''}>
       <table cellpadding="0" cellspacing="0" border="0"
         style="border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt;">
         <tr>
-          <td width="20" height="20" align="center" valign="middle"
-            style="width:20px;height:20px;background-color:${badgeColor};
-                   text-align:center;vertical-align:middle;
-                   font-family:Arial,sans-serif;font-size:11px;
-                   color:#ffffff;line-height:20px;mso-line-height-rule:exactly;">
-            ${entity}
+          <td width="24" valign="middle"
+            style="width:24px;vertical-align:middle;">
+            <img src="${iconSrc}" width="16" height="16" border="0"
+              style="display:block;width:16px;height:16px;" alt="">
           </td>
           <td style="padding-left:8px;font-family:Arial,sans-serif;font-size:12px;
                      color:${textColor};line-height:18px;mso-line-height-rule:exactly;
-                     white-space:nowrap;vertical-align:middle;" valign="middle">
+                     vertical-align:middle;max-width:180px;word-break:break-all;
+                     overflow-wrap:break-word;" valign="middle">
             <a href="${href}"
               style="color:${textColor};text-decoration:none;
                      font-family:Arial,sans-serif;font-size:12px;

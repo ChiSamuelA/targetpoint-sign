@@ -1,6 +1,6 @@
 // Bold — two-column split: left TD dark purple (photo + name), right TD white (contact)
 import type { SignatureData, SignatureImages } from '@/types/signature'
-import { BRAND, tpBadge, contactRow, productBanner, whatsappHref, socialIconsRow, normalizeUrl } from './shared'
+import { BRAND, tpBadge, contactRow, productBanner, whatsappHref, socialIconsRow, normalizeUrl, clampText } from './shared'
 
 export function buildBold(data: SignatureData, images: SignatureImages): string {
   const { fullName, role, phone, email, website, photoBase64, products, socials } = data
@@ -28,15 +28,17 @@ export function buildBold(data: SignatureData, images: SignatureImages): string 
       <tr>
         <td style="font-family:Arial,sans-serif;font-size:18px;font-weight:bold;
                    color:#ffffff;line-height:24px;mso-line-height-rule:exactly;
-                   white-space:nowrap;padding-bottom:3px;">
-          ${fullName || 'Full Name'}
+                   max-width:200px;word-wrap:break-word;overflow-wrap:break-word;
+                   padding-bottom:3px;">
+          ${clampText(fullName || 'Full Name', 40)}
         </td>
       </tr>
       <tr>
         <td style="font-family:Arial,sans-serif;font-size:12px;color:#d4b8ff;
                    line-height:18px;mso-line-height-rule:exactly;
-                   white-space:nowrap;padding-bottom:14px;">
-          ${role || 'Job Title'}
+                   max-width:200px;word-wrap:break-word;overflow-wrap:break-word;
+                   padding-bottom:14px;">
+          ${clampText(role || 'Job Title', 50)}
         </td>
       </tr>
       <tr>
@@ -51,9 +53,9 @@ export function buildBold(data: SignatureData, images: SignatureImages): string 
       valign="middle">
     <table cellpadding="0" cellspacing="0" border="0"
       style="border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt;">
-      ${phone   ? contactRow('&#9742;', whatsappHref(phone),  phone,   { textColor: '#374151', badgeColor: BRAND, bottomPad: !!(email || website || hasSocials) }) : ''}
-      ${email   ? contactRow('&#9993;', `mailto:${email}`,    email,   { textColor: '#374151', badgeColor: BRAND, bottomPad: !!(website || hasSocials) }) : ''}
-      ${website ? contactRow('&#9632;', normalizeUrl(website), website, { textColor: '#374151', badgeColor: BRAND, bottomPad: hasSocials }) : ''}
+      ${phone   ? contactRow(images.appelIcon, whatsappHref(phone),   phone,                    { textColor: '#374151', bottomPad: !!(email || website || hasSocials) }) : ''}
+      ${email   ? contactRow(images.emailIcon, `mailto:${email}`,    clampText(email, 42),     { textColor: '#374151', bottomPad: !!(website || hasSocials) }) : ''}
+      ${website ? contactRow(images.globeIcon, normalizeUrl(website), clampText(website, 42),  { textColor: '#374151', bottomPad: hasSocials }) : ''}
       ${socialIconsRow(socials, images)}
     </table>
   </td>`
