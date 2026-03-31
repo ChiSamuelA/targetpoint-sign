@@ -120,6 +120,11 @@ export function whatsappHref(phone: string): string {
   return `https://wa.me/${phone.replace(/[^0-9]/g, '')}`
 }
 
+// ── URL normalizer — prepend https:// for bare domains ────────────────────────
+export function normalizeUrl(val: string): string {
+  return /^https?:\/\//i.test(val) ? val : `https://${val}`
+}
+
 // ── Social media icon row ──────────────────────────────────────────────────────
 // Only renders platforms the user has filled in. Order: LinkedIn → Instagram → Facebook.
 // Each icon is a 28×28 colored badge with the white platform icon inside.

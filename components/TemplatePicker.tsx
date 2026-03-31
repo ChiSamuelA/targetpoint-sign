@@ -26,7 +26,7 @@ export default function TemplatePicker({ data, onChange }: Props) {
       <p className="text-[11px] font-medium text-gray-400 uppercase tracking-widest mb-3">
         Choose Template
       </p>
-      <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
         {TEMPLATES.map(({ id, name, tagline }) => {
           const active = data.templateId === id
           return (

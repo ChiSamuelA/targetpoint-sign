@@ -15,6 +15,8 @@ type CopyState = 'idle' | 'loading' | 'success' | 'error'
 
 export default function CopyButton({ data, isValid = true }: Props) {
   const [state, setState] = useState<CopyState>('idle')
+  const hasRequired = !!(data.fullName.trim() && data.role.trim() && data.email.trim())
+  const canCopy = isValid && hasRequired
 
   const handleCopy = async () => {
     setState('loading')
@@ -50,15 +52,15 @@ export default function CopyButton({ data, isValid = true }: Props) {
     <div className="space-y-2">
       <button
         onClick={handleCopy}
-        disabled={!isValid || state === 'loading'}
+        disabled={!canCopy || state === 'loading'}
         className={cn(
           'w-full flex items-center justify-center gap-2.5 py-3.5 px-6 rounded-xl font-semibold text-sm transition-all',
-          !isValid && 'bg-gray-200 text-gray-400 cursor-not-allowed',
-          isValid && state === 'idle' &&
+          !canCopy && 'bg-gray-200 text-gray-400 cursor-not-allowed',
+          canCopy && state === 'idle' &&
             'bg-purple-700 hover:bg-purple-800 text-white shadow-md hover:shadow-lg active:scale-[0.98]',
-          isValid && state === 'loading' && 'bg-purple-400 text-white cursor-wait',
-          isValid && state === 'success' && 'bg-emerald-600 text-white',
-          isValid && state === 'error' && 'bg-red-500 text-white'
+          canCopy && state === 'loading' && 'bg-purple-400 text-white cursor-wait',
+          canCopy && state === 'success' && 'bg-emerald-600 text-white',
+          canCopy && state === 'error' && 'bg-red-500 text-white'
         )}
       >
         {state === 'idle' && (
@@ -87,13 +89,19 @@ export default function CopyButton({ data, isValid = true }: Props) {
         )}
       </button>
 
-      {!isValid && (
+      {!hasRequired && (
+        <p className="text-xs text-center text-gray-400 leading-relaxed">
+          Fill in your <strong>name</strong>, <strong>role</strong> and <strong>email</strong> to unlock your signature.
+        </p>
+      )}
+
+      {hasRequired && !isValid && (
         <p className="text-xs text-center text-red-500 leading-relaxed">
           <strong>Fix the invalid fields above</strong> — one or more emails or URLs are incorrectly formatted.
         </p>
       )}
 
-      {isValid && state === 'success' && (
+      {canCopy && state === 'success' && (
         <p className="text-xs text-center text-gray-500 leading-relaxed">
           Open Outlook &rarr; <strong>File &rarr; Options &rarr; Mail &rarr; Signatures</strong>
           {' '}and paste with{' '}
@@ -103,7 +111,7 @@ export default function CopyButton({ data, isValid = true }: Props) {
         </p>
       )}
 
-      {isValid && state === 'error' && (
+      {canCopy && state === 'error' && (
         <p className="text-xs text-center text-red-400 leading-relaxed">
           Browser blocked clipboard access. The page must be served over{' '}
           <strong>HTTPS</strong> or <strong>localhost</strong> for the

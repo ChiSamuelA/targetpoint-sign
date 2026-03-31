@@ -30,10 +30,10 @@ const PRODUCTS = [
 ]
 
 const TEXT_FIELDS = [
-  { field: 'fullName' as const, label: 'Full Name',        icon: User,      placeholder: 'Ahmed Al-Rashidi',          type: 'text'  },
-  { field: 'role'     as const, label: 'Role / Job Title', icon: Briefcase, placeholder: 'Senior Marketing Manager',  type: 'text'  },
-  { field: 'email'    as const, label: 'Email Address',    icon: Mail,      placeholder: 'ahmed@targetpoint.com',     type: 'email' },
-  { field: 'website'  as const, label: 'Website',          icon: Globe,     placeholder: 'https://yourwebsite.com',   type: 'url'   },
+  { field: 'fullName' as const, label: 'Full Name',        icon: User,      placeholder: 'Ahmed Al-Rashidi',          type: 'text',  required: true,  maxLength: 60  },
+  { field: 'role'     as const, label: 'Role / Job Title', icon: Briefcase, placeholder: 'Senior Marketing Manager',  type: 'text',  required: true,  maxLength: 80  },
+  { field: 'email'    as const, label: 'Email Address',    icon: Mail,      placeholder: 'ahmed@targetpoint.com',     type: 'email', required: true,  maxLength: undefined },
+  { field: 'website'  as const, label: 'Website',          icon: Globe,     placeholder: 'yourwebsite.com',           type: 'url',   required: false, maxLength: undefined },
 ]
 
 function isValidEmail(val: string) {
@@ -178,9 +178,12 @@ export default function SignatureForm({ data, onChange, onValidationChange }: Pr
         <div className="h-px bg-gray-100" />
 
         {/* ── Text Fields (name, role, email, website) ─────────────────────────── */}
-        {TEXT_FIELDS.map(({ field, label, icon: Icon, placeholder, type }) => (
+        {TEXT_FIELDS.map(({ field, label, icon: Icon, placeholder, type, required, maxLength }) => (
           <div key={field}>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">{label}</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">
+              {label}
+              {required && <span className="text-red-500 ml-0.5">*</span>}
+            </label>
             <div className="relative">
               <Icon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
               <input
@@ -188,10 +191,16 @@ export default function SignatureForm({ data, onChange, onValidationChange }: Pr
                 value={data[field]}
                 onChange={(e) => setField(field, e.target.value)}
                 onBlur={(e) => {
-                  if (type === 'email') validateEmail(field, e.target.value)
-                  if (type === 'url')   validateUrl(field, e.target.value)
+                  const val = e.target.value
+                  if (required && !val.trim()) {
+                    applyError(field, 'This field is required')
+                    return
+                  }
+                  if (type === 'email') validateEmail(field, val)
+                  if (type === 'url')   validateUrl(field, val)
                 }}
                 placeholder={placeholder}
+                maxLength={maxLength}
                 className={inputClass(field,
                   'w-full pl-9 pr-4 py-2.5 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:border-transparent transition-shadow placeholder:text-gray-300 text-gray-800'
                 )}

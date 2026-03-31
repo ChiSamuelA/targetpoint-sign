@@ -1,9 +1,6 @@
 // JG — white body, circular gold-bordered photo, indigo name, gold social circles, indigo banner
 import type { SignatureData, SignatureImages } from '@/types/signature'
-
-function normalizeUrl(val: string): string {
-  return /^https?:\/\//i.test(val) ? val : `https://${val}`
-}
+import { normalizeUrl } from './shared'
 
 function contactIcon(src: string, alt: string): string {
   return `<img src="${src}" width="16" height="16" border="0"

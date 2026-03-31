@@ -1,9 +1,9 @@
 // Mono — white body, 4px purple top strip, gray dividers, purple icon badges
 import type { SignatureData, SignatureImages } from '@/types/signature'
-import { BRAND, tpBadge, contactRow, productBanner, whatsappHref, socialIconsRow } from './shared'
+import { BRAND, tpBadge, contactRow, productBanner, whatsappHref, socialIconsRow, normalizeUrl } from './shared'
 
 export function buildMono(data: SignatureData, images: SignatureImages): string {
-  const { fullName, role, phone, email, photoBase64, products, socials } = data
+  const { fullName, role, phone, email, website, photoBase64, products, socials } = data
   const hasSocials = !!(socials.facebook || socials.instagram || socials.linkedin)
   // TDs in content row: [photo?] + center + divider + contact = 3 or 4
   // Top-strip and banner rows share this colCount
@@ -63,8 +63,9 @@ export function buildMono(data: SignatureData, images: SignatureImages): string 
       padding-bottom:18px;padding-left:20px;" valign="middle">
     <table cellpadding="0" cellspacing="0" border="0"
       style="border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt;">
-      ${phone ? contactRow('&#9742;', whatsappHref(phone), phone, { textColor: '#374151', badgeColor: BRAND, bottomPad: !!(email || hasSocials) }) : ''}
-      ${email ? contactRow('&#9993;', `mailto:${email}`, email, { textColor: '#374151', badgeColor: BRAND, bottomPad: false }) : ''}
+      ${phone   ? contactRow('&#9742;', whatsappHref(phone),  phone,   { textColor: '#374151', badgeColor: BRAND, bottomPad: !!(email || website || hasSocials) }) : ''}
+      ${email   ? contactRow('&#9993;', `mailto:${email}`,    email,   { textColor: '#374151', badgeColor: BRAND, bottomPad: !!(website || hasSocials) }) : ''}
+      ${website ? contactRow('&#9632;', normalizeUrl(website), website, { textColor: '#374151', badgeColor: BRAND, bottomPad: hasSocials }) : ''}
       ${socialIconsRow(socials, images)}
     </table>
   </td>`
