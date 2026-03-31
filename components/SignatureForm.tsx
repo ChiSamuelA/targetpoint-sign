@@ -40,8 +40,14 @@ function isValidEmail(val: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)
 }
 
-function isValidUrl(val: string) {
-  try { new URL(val); return true } catch { return false }
+// Prepend https:// if no protocol — allows bare domains like chisamuel.com
+function normalizeUrl(val: string): string {
+  if (!val) return val
+  return /^https?:\/\//i.test(val) ? val : `https://${val}`
+}
+
+function isValidUrl(val: string): boolean {
+  try { new URL(normalizeUrl(val)); return true } catch { return false }
 }
 
 export default function SignatureForm({ data, onChange, onValidationChange }: Props) {
@@ -236,10 +242,10 @@ export default function SignatureForm({ data, onChange, onValidationChange }: Pr
           <label className="block text-sm font-medium text-gray-700 mb-3">Social Media</label>
           <div className="space-y-3">
             {([
-              { key: 'linkedin'  as const, icon: Link, placeholder: 'https://linkedin.com/in/yourname'  },
-              { key: 'instagram' as const, icon: Link, placeholder: 'https://instagram.com/yourhandle'  },
-              { key: 'facebook'  as const, icon: Link, placeholder: 'https://facebook.com/yourprofile'  },
-            ] as const).map(({ key, icon: Icon, placeholder }) => (
+              { key: 'linkedin'  as const, icon: Link, placeholder: 'https://linkedin.com/in/yourname',  domain: 'linkedin.com',  name: 'LinkedIn'  },
+              { key: 'instagram' as const, icon: Link, placeholder: 'https://instagram.com/yourhandle',  domain: 'instagram.com', name: 'Instagram' },
+              { key: 'facebook'  as const, icon: Link, placeholder: 'https://facebook.com/yourprofile',  domain: 'facebook.com',  name: 'Facebook'  },
+            ] as const).map(({ key, icon: Icon, placeholder, domain, name }) => (
               <div key={key}>
                 <div className="relative">
                   <Icon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
@@ -249,7 +255,24 @@ export default function SignatureForm({ data, onChange, onValidationChange }: Pr
                     onChange={(e) =>
                       onChange({ ...data, socials: { ...data.socials, [key]: e.target.value } })
                     }
-                    onBlur={(e) => validateUrl(`socials.${key}`, e.target.value)}
+                    onBlur={(e) => {
+                      const val = e.target.value
+                      const errorKey = `socials.${key}`
+                      if (!val) { applyError(errorKey, null); return }
+                      if (!isValidUrl(val)) {
+                        applyError(errorKey, `Enter a valid URL (e.g. https://${domain}/...)`)
+                        return
+                      }
+                      try {
+                        const hostname = new URL(normalizeUrl(val)).hostname
+                        if (!hostname.includes(domain))
+                          applyError(errorKey, `This must be a ${name} link — URL must include ${domain}`)
+                        else
+                          applyError(errorKey, null)
+                      } catch {
+                        applyError(errorKey, `Enter a valid ${name} URL`)
+                      }
+                    }}
                     placeholder={placeholder}
                     className={inputClass(`socials.${key}`,
                       'w-full pl-9 pr-4 py-2.5 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:border-transparent transition-shadow placeholder:text-gray-300 text-gray-800'

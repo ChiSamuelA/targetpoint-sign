@@ -1,6 +1,10 @@
 // JG — white body, circular gold-bordered photo, indigo name, gold social circles, indigo banner
 import type { SignatureData, SignatureImages } from '@/types/signature'
 
+function normalizeUrl(val: string): string {
+  return /^https?:\/\//i.test(val) ? val : `https://${val}`
+}
+
 function contactIcon(src: string, alt: string): string {
   return `<img src="${src}" width="16" height="16" border="0"
     style="display:block;width:16px;height:16px;" alt="${alt}">`
@@ -80,7 +84,7 @@ export function buildJG(data: SignatureData, images: SignatureImages): string {
           <td valign="middle"
             style="vertical-align:middle;font-family:Arial,sans-serif;font-size:13px;
                    color:#333333;white-space:nowrap;">
-            <a href="${website}" target="_blank"
+            <a href="${normalizeUrl(website)}" target="_blank"
               style="color:#333333;font-size:13px;text-decoration:none;
                      font-family:Arial,sans-serif;">
               ${website}
