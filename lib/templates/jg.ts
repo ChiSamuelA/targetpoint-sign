@@ -182,14 +182,14 @@ export function buildJG(data: SignatureData, images: SignatureImages): string {
   </td>`
 
   // ── COLUMN 3: JG Logo ────────────────────────────────────────────────────────
-  const logoCell = `<td width="200" valign="middle" align="right"
-    style="width:200px;padding-top:24px;padding-right:24px;padding-bottom:24px;
-           padding-left:24px;vertical-align:middle;text-align:right;
+  const logoCell = `<td width="240" valign="middle" align="right"
+    style="width:240px;padding-top:20px;padding-right:20px;padding-bottom:20px;
+           padding-left:20px;vertical-align:middle;text-align:right;
            mso-table-lspace:0pt;mso-table-rspace:0pt;">
     <a href="https://www.josephinegarrick.com/" target="_blank"
       style="display:block;text-decoration:none;">
-      <img src="${images.jgLogo}" width="160" height="80"
-        style="display:block;margin-left:auto;width:160px;height:80px;object-fit:contain;" alt="Josephine Garrick LTD">
+      <img src="${images.jgLogo}" width="200" height="100"
+        style="display:block;margin-left:auto;width:200px;height:100px;object-fit:contain;" alt="Josephine Garrick LTD">
     </a>
   </td>`
 
