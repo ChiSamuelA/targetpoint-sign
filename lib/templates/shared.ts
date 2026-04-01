@@ -162,10 +162,11 @@ export function socialIconsRow(
     </td>`
   ).join('')
 
+  const single = active.length === 1
   return `<tr>
-    <td style="padding-top:8px;">
-      <table cellpadding="0" cellspacing="0" border="0"
-        style="border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt;">
+    <td${single ? ' align="center"' : ''} style="padding-top:8px;${single ? 'text-align:center;' : ''}">
+      <table cellpadding="0" cellspacing="0" border="0"${single ? ' align="center"' : ''}
+        style="border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt;${single ? 'margin:0 auto;' : ''}">
         <tr>${cells}</tr>
       </table>
     </td>

@@ -141,10 +141,11 @@ export function buildJG(data: SignatureData, images: SignatureImages): string {
     </td>`
   ).join('')
 
+  const singleSocial = socialPlatforms.length === 1
   const socialRow = hasSocials ? `<tr>
-    <td>
-      <table cellpadding="0" cellspacing="0" border="0"
-        style="border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt;">
+    <td${singleSocial ? ' align="center"' : ''} style="${singleSocial ? 'text-align:center;' : ''}">
+      <table cellpadding="0" cellspacing="0" border="0"${singleSocial ? ' align="center"' : ''}
+        style="border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt;${singleSocial ? 'margin:0 auto;' : ''}">
         <tr>${socialCells}</tr>
       </table>
     </td>
