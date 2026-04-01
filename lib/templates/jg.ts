@@ -29,32 +29,27 @@ export function buildJG(data: SignatureData, images: SignatureImages): string {
   const { fullName, role, phone, email, website, photoBase64, socials } = data
   const hasSocials = !!(socials.linkedin || socials.instagram || socials.facebook)
 
-  // ── COLUMN 1: Photo (160px) ─────────────────────────────────────────────────
+  // ── COLUMN 1: Photo ─────────────────────────────────────────────────────────
   const photoInner = photoBase64
-    ? `<img src="${photoBase64}" width="110" height="110"
+    ? `<img src="${photoBase64}" width="100" height="100"
          style="display:block;border-radius:50%;border:3px solid ${GOLD};
-                width:110px;height:110px;object-fit:cover;" alt="${fullName}">`
+                width:100px;height:100px;object-fit:cover;" alt="${fullName}">`
     : `<table cellpadding="0" cellspacing="0" border="0"
          style="border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt;">
          <tr>
-           <td width="110" height="110"
-             style="width:110px;height:110px;border-radius:50%;border:3px solid ${GOLD};
+           <td width="100" height="100"
+             style="width:100px;height:100px;border-radius:50%;border:3px solid ${GOLD};
                     font-size:0;line-height:0;mso-line-height-rule:exactly;">&nbsp;</td>
          </tr>
        </table>`
 
-  const photoTable = `<table align="left" cellpadding="0" cellspacing="0" border="0" width="160"
-    style="border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt;width:160px;">
-    <tr>
-      <td align="center" valign="middle"
-        style="padding-top:24px;padding-right:10px;padding-bottom:20px;
-               padding-left:24px;vertical-align:middle;">
-        ${photoInner}
-      </td>
-    </tr>
-  </table>`
+  const photoCell = `<td width="140" valign="middle" align="center" class="stack"
+    style="width:140px;padding-top:24px;padding-right:0;padding-bottom:24px;
+           padding-left:14px;vertical-align:middle;text-align:center;">
+    ${photoInner}
+  </td>`
 
-  // ── COLUMN 2: Info block (~320px) ──────────────────────────────────────────
+  // ── COLUMN 2: Info block ───────────────────────────────────────────────────
   const socialPlatforms = [
     socials.linkedin  ? { url: socials.linkedin,  src: images.linkedin,  alt: 'LinkedIn'  } : null,
     socials.instagram ? { url: socials.instagram, src: images.instagram, alt: 'Instagram' } : null,
@@ -79,92 +74,82 @@ export function buildJG(data: SignatureData, images: SignatureImages): string {
     </td>`
   ).join('')
 
-  const infoTable = `<table align="left" cellpadding="0" cellspacing="0" border="0" width="310"
-    style="border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt;width:310px;">
-    <tr>
-      <td valign="top"
-        style="vertical-align:top;padding-top:24px;padding-right:10px;
-               padding-bottom:24px;padding-left:20px;
-               border-left:2px solid ${INDIGO};">
-        <table cellpadding="0" cellspacing="0" border="0"
-          style="border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt;">
-          <tr>
-            <td style="font-family:Arial,sans-serif;font-size:20px;font-weight:bold;
-                       color:#000000;line-height:24px;mso-line-height-rule:exactly;
-                       padding-bottom:2px;white-space:nowrap;">
-              ${clampText(fullName || 'Full Name', 40)}
-            </td>
-          </tr>
-          <tr>
-            <td style="font-family:Arial,sans-serif;font-size:13px;color:#666666;
-                       line-height:18px;mso-line-height-rule:exactly;
-                       padding-bottom:16px;white-space:nowrap;">
-              ${clampText(role || 'Job Title', 50)}
-            </td>
-          </tr>
-          ${email ? `<tr>
-            <td style="padding-bottom:8px;">
-              <table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">
-                <tr>
-                  <td width="32" valign="middle">${contactIconBadge(images.emailIconWh, 'Email')}</td>
-                  <td style="font-family:Arial,sans-serif;font-size:12px;color:#333333;padding-left:8px;white-space:nowrap;">
-                    <a href="mailto:${email}" style="color:#333333;text-decoration:none;">${clampText(email, 42)}</a>
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>` : ''}
-          ${phone ? `<tr>
-            <td style="padding-bottom:8px;">
-              <table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">
-                <tr>
-                  <td width="32" valign="middle">${contactIconBadge(images.telephoneIconWh, 'Phone')}</td>
-                  <td style="font-family:Arial,sans-serif;font-size:12px;color:#333333;padding-left:8px;white-space:nowrap;">
-                    <a href="tel:${phone.replace(/\s/g, '')}" style="color:#333333;text-decoration:none;">${phone}</a>
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>` : ''}
-          ${website ? `<tr>
-            <td style="padding-bottom:12px;">
-              <table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">
-                <tr>
-                  <td width="32" valign="middle">${contactIconBadge(images.globeIconWh, 'Website')}</td>
-                  <td style="font-family:Arial,sans-serif;font-size:12px;color:#333333;padding-left:8px;white-space:nowrap;">
-                    <a href="${normalizeUrl(website)}" target="_blank" style="color:#333333;text-decoration:none;">${clampText(website, 42)}</a>
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>` : ''}
-          ${hasSocials ? `<tr>
-            <td style="padding-top:4px;">
-              <table cellpadding="0" cellspacing="0" border="0">
-                <tr>${socialCells}</tr>
-              </table>
-            </td>
-          </tr>` : ''}
-        </table>
-      </td>
-    </tr>
-  </table>`
+  const infoCell = `<td width="340" valign="top" class="stack"
+    style="width:340px;vertical-align:top;padding-top:24px;padding-right:10px;
+           padding-bottom:24px;padding-left:20px;
+           border-left:2px solid ${INDIGO};">
+    <table cellpadding="0" cellspacing="0" border="0"
+      style="border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt;">
+      <tr>
+        <td style="font-family:Arial,sans-serif;font-size:20px;font-weight:bold;
+                   color:${INDIGO};line-height:24px;mso-line-height-rule:exactly;
+                   padding-bottom:2px;white-space:nowrap;">
+          ${clampText(fullName || 'Full Name', 45)}
+        </td>
+      </tr>
+      <tr>
+        <td style="font-family:Arial,sans-serif;font-size:13px;color:#666666;
+                   line-height:18px;mso-line-height-rule:exactly;
+                   padding-bottom:16px;white-space:nowrap;">
+          ${clampText(role || 'Job Title', 60)}
+        </td>
+      </tr>
+      ${email ? `<tr>
+        <td style="padding-bottom:8px;">
+          <table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">
+            <tr>
+              <td width="32" valign="middle">${contactIconBadge(images.emailIconWh, 'Email')}</td>
+              <td style="font-family:Arial,sans-serif;font-size:12px;color:#333333;padding-left:8px;white-space:nowrap;">
+                <a href="mailto:${email}" style="color:#333333;text-decoration:none;">${clampText(email, 42)}</a>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>` : ''}
+      ${phone ? `<tr>
+        <td style="padding-bottom:8px;">
+          <table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">
+            <tr>
+              <td width="32" valign="middle">${contactIconBadge(images.telephoneIconWh, 'Phone')}</td>
+              <td style="font-family:Arial,sans-serif;font-size:12px;color:#333333;padding-left:8px;white-space:nowrap;">
+                <a href="tel:${phone.replace(/\s/g, '')}" style="color:#333333;text-decoration:none;">${phone}</a>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>` : ''}
+      ${website ? `<tr>
+        <td style="padding-bottom:12px;">
+          <table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">
+            <tr>
+              <td width="32" valign="middle">${contactIconBadge(images.globeIconWh, 'Website')}</td>
+              <td style="font-family:Arial,sans-serif;font-size:12px;color:#333333;padding-left:8px;white-space:nowrap;">
+                <a href="${normalizeUrl(website)}" target="_blank" style="color:#333333;text-decoration:none;">${clampText(website, 42)}</a>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>` : ''}
+      ${hasSocials ? `<tr>
+        <td style="padding-top:4px;">
+          <table cellpadding="0" cellspacing="0" border="0">
+            <tr>${socialCells}</tr>
+          </table>
+        </td>
+      </tr>` : ''}
+    </table>
+  </td>`
 
-  // ── COLUMN 3: JG Logo (180px) ──────────────────────────────────────────────
-  const logoTable = `<table align="left" cellpadding="0" cellspacing="0" border="0" width="180"
-    style="border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt;width:180px;">
-    <tr>
-      <td align="center" valign="middle"
-        style="padding-top:20px;padding-right:20px;padding-bottom:20px;
-               padding-left:20px;vertical-align:middle;">
-        <a href="https://www.josephinegarrick.com/" target="_blank"
-          style="display:block;text-decoration:none;">
-          <img src="${images.jgLogo}" width="140"
-            style="display:block;width:140px;height:auto;object-fit:contain;" alt="Josephine Garrick LTD">
-        </a>
-      </td>
-    </tr>
-  </table>`
+  // ── COLUMN 3: JG Logo ──────────────────────────────────────────────────────
+  const logoCell = `<td width="220" valign="middle" align="center" class="stack"
+    style="width:220px;padding-top:20px;padding-right:20px;padding-bottom:20px;
+           padding-left:14px;vertical-align:middle;text-align:center;">
+    <a href="https://www.josephinegarrick.com/" target="_blank"
+      style="display:block;text-decoration:none;margin:0 auto;">
+      <img src="${images.jgLogo}" width="200"
+        style="display:block;width:200px;height:auto;object-fit:contain;margin:0 auto;" alt="Josephine Garrick LTD">
+    </a>
+  </td>`
 
   // ── BOTTOM BANNER ──────────────────────────────────────────────────────────
   const brandCells = BRANDS.map(b => {
@@ -189,40 +174,26 @@ export function buildJG(data: SignatureData, images: SignatureImages): string {
     </td>`
   }).join('')
 
-  return `<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"
+  return `
+  <style>
+    @media only screen and (max-width: 600px) {
+      .stack { display: block !important; width: 100% !important; max-width: 100% !important; border: none !important; text-align: center !important; padding-left: 0 !important; padding-right: 0 !important; }
+      .stack img { margin: 0 auto !important; }
+    }
+  </style>
+  <table role="presentation" align="center" cellpadding="0" cellspacing="0" border="0" width="700"
     style="border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt;
-           background-color:#ffffff;font-family:Arial,sans-serif;
-           color-scheme:light;width:100%;max-width:650px;">
+           background-color:#ffffff;font-family:Arial,sans-serif;margin:0 auto;
+           color-scheme:light;width:700px;">
     <tr>
-      <td style="padding:0;">
-        <!--[if (gte mso 9)|(IE)]>
-        <table width="650" align="left" cellpadding="0" cellspacing="0" border="0">
-          <tr>
-            <td width="160" valign="middle">
-        <![endif]-->
-        ${photoTable}
-        <!--[if (gte mso 9)|(IE)]>
-            </td>
-            <td width="310" valign="top">
-        <![endif]-->
-        ${infoTable}
-        <!--[if (gte mso 9)|(IE)]>
-            </td>
-            <td width="180" valign="middle">
-        <![endif]-->
-        ${logoTable}
-        <!--[if (gte mso 9)|(IE)]>
-            </td>
-          </tr>
-        </table>
-        <![endif]-->
-      </td>
+      ${photoCell}
+      ${infoCell}
+      ${logoCell}
     </tr>
     <tr>
-      <td style="background-color:${INDIGO};padding:4px 10px;">
+      <td colspan="3" style="background-color:${INDIGO};padding:4px 10px;">
         <table cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;">
           <tr>
-            <!-- On mobile these will naturally squash, but keeping them in one row for the 'Letterhead' look -->
             ${brandCells}
           </tr>
         </table>
