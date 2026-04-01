@@ -5,6 +5,7 @@ import { User, Briefcase, Mail, Globe, Upload, X, Link } from 'lucide-react'
 import { parsePhoneNumber, isValidPhoneNumber } from 'libphonenumber-js'
 import { cn } from '@/lib/utils'
 import type { SignatureData } from '@/types/signature'
+import PhotoCropModal from '@/components/PhotoCropModal'
 
 interface Props {
   data: SignatureData
@@ -40,6 +41,23 @@ function isValidEmail(val: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)
 }
 
+// ── Phone parse helpers (used to restore dial-code UI from stored data) ────────
+function extractDialCode(phone: string): string {
+  if (!phone) return '+971'
+  const clean = phone.replace(/[\s()\-]/g, '')
+  const sorted = [...DIAL_CODES].sort((a, b) => b.code.length - a.code.length)
+  for (const { code } of sorted) {
+    if (clean.startsWith(code)) return code
+  }
+  return '+971'
+}
+
+function extractLocalNumber(phone: string): string {
+  if (!phone) return ''
+  const dialCode = extractDialCode(phone)
+  return phone.slice(dialCode.length).trim()
+}
+
 // Prepend https:// if no protocol — allows bare domains like chisamuel.com
 function normalizeUrl(val: string): string {
   if (!val) return val
@@ -52,9 +70,10 @@ function isValidUrl(val: string): boolean {
 
 export default function SignatureForm({ data, onChange, onValidationChange }: Props) {
   const fileInputRef = useRef<HTMLInputElement>(null)
-  const [dialCode, setDialCode]       = useState('+971')
-  const [localNumber, setLocalNumber] = useState('')
+  const [dialCode, setDialCode]       = useState(() => extractDialCode(data.phone))
+  const [localNumber, setLocalNumber] = useState(() => extractLocalNumber(data.phone))
   const [errors, setErrors]           = useState<Record<string, string>>({})
+  const [cropSrc, setCropSrc]         = useState<string | null>(null)
 
   const applyError = (key: string, message: string | null) => {
     const next = { ...errors }
@@ -84,8 +103,10 @@ export default function SignatureForm({ data, onChange, onValidationChange }: Pr
     const file = e.target.files?.[0]
     if (!file) return
     const reader = new FileReader()
-    reader.onloadend = () => onChange({ ...data, photoBase64: reader.result as string })
+    reader.onloadend = () => setCropSrc(reader.result as string)
     reader.readAsDataURL(file)
+    // Reset so the same file can be re-selected if user cancels crop
+    e.target.value = ''
   }
 
   const toggleProduct = (key: keyof SignatureData['products']) =>
@@ -119,6 +140,7 @@ export default function SignatureForm({ data, onChange, onValidationChange }: Pr
     cn(base, errors[key] ? 'border-red-400 focus:ring-red-400' : 'border-gray-200 focus:ring-purple-500')
 
   return (
+    <>
     <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
       <div className="bg-gradient-to-r from-purple-950 to-purple-800 px-6 py-4">
         <h2 className="text-white font-semibold text-lg">Your Details</h2>
@@ -344,5 +366,18 @@ export default function SignatureForm({ data, onChange, onValidationChange }: Pr
 
       </div>
     </div>
+
+    {/* Photo crop modal — opens after file selection */}
+    {cropSrc && (
+      <PhotoCropModal
+        imageSrc={cropSrc}
+        onConfirm={(base64) => {
+          onChange({ ...data, photoBase64: base64 })
+          setCropSrc(null)
+        }}
+        onCancel={() => setCropSrc(null)}
+      />
+    )}
+    </>
   )
 }

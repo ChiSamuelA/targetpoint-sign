@@ -15,7 +15,7 @@ const BRANDS = [
   { fav: 'targetpointFav',   url: 'https://targetpoint.fr',            label: 'TARGET POINT'  },
   { fav: 'tripnbusinessFav', url: 'https://www.tripnbusiness.com',      label: 'TRIPNBUSINESS' },
   { fav: 'weExportFav',      url: 'https://www.we-export.com',          label: 'WE EXPORT'     },
-  { fav: 'weImportFav',      url: 'https://www.we-import.com',          label: 'WE IMPORT'     },
+  { fav: 'weImportFav',      url: 'https://www.we-import.fr',          label: 'WE IMPORT'     },
 ] as const
 
 export function buildJG(data: SignatureData, images: SignatureImages): string {
@@ -186,7 +186,7 @@ export function buildJG(data: SignatureData, images: SignatureImages): string {
     style="width:200px;padding-top:24px;padding-right:24px;padding-bottom:24px;
            padding-left:24px;vertical-align:middle;text-align:right;
            mso-table-lspace:0pt;mso-table-rspace:0pt;">
-    <a href="https://josephinegarrickltd.com" target="_blank"
+    <a href="https://www.josephinegarrick.com/" target="_blank"
       style="display:block;text-decoration:none;">
       <img src="${images.jgLogo}" width="160" height="80"
         style="display:block;margin-left:auto;width:160px;height:80px;object-fit:contain;" alt="Josephine Garrick LTD">
