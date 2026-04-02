@@ -1,6 +1,6 @@
 // JG — white body, circular gold-bordered photo, indigo name, gold social circles, indigo banner
 import type { SignatureData, SignatureImages } from '@/types/signature'
-import { normalizeUrl, clampText } from './shared'
+import { normalizeUrl, clampText, whatsappHref } from './shared'
 
 function contactIconBadge(src: string, alt: string): string {
   return `<table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">
@@ -112,7 +112,7 @@ export function buildJG(data: SignatureData, images: SignatureImages): string {
             <tr>
               <td width="32" valign="middle">${contactIconBadge(images.telephoneIconWh, 'Phone')}</td>
               <td style="font-family:Arial,sans-serif;font-size:12px;color:#333333;padding-left:8px;white-space:nowrap;">
-                <a href="tel:${phone.replace(/\s/g, '')}" style="color:#333333;text-decoration:none;">${phone}</a>
+                <a href="${whatsappHref(phone)}" target="_blank" style="color:#333333;text-decoration:none;">${phone}</a>
               </td>
             </tr>
           </table>
@@ -181,9 +181,9 @@ export function buildJG(data: SignatureData, images: SignatureImages): string {
       .stack img { margin: 0 auto !important; }
     }
   </style>
-  <table role="presentation" align="center" cellpadding="0" cellspacing="0" border="0" width="700"
+  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="700"
     style="border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt;
-           background-color:#ffffff;font-family:Arial,sans-serif;margin:0 auto;
+           background-color:#ffffff;font-family:Arial,sans-serif;
            color-scheme:light;width:700px;">
     <tr>
       ${photoCell}
