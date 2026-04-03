@@ -3,6 +3,7 @@
 import { useMemo } from 'react'
 import { buildSignatureHTML, getPreviewImages } from '@/lib/generateSignature'
 import CopyButton from '@/components/CopyButton'
+import CopyButtonErrorBoundary from '@/components/CopyButtonErrorBoundary'
 import type { SignatureData } from '@/types/signature'
 
 interface Props {
@@ -60,7 +61,9 @@ export default function SignaturePreview({ data, isValid = true }: Props) {
         </div>
       </div>
 
-      <CopyButton data={data} isValid={isValid} />
+      <CopyButtonErrorBoundary>
+        <CopyButton data={data} isValid={isValid} />
+      </CopyButtonErrorBoundary>
 
       <p className="text-xs text-center text-gray-400">
         All logos are embedded as base64 on copy — no external image hosting needed.
