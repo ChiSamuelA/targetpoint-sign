@@ -18,6 +18,7 @@ const DIAL_CODES = [
   { code: '+221', flag: '🇸🇳' },
   { code: '+229', flag: '🇧🇯' },
   { code: '+261', flag: '🇲🇬' },
+  { code: '+34',  flag: '🇪🇸' },
   { code: '+33',  flag: '🇫🇷' },
   { code: '+32',  flag: '🇧🇪' },
   { code: '+971', flag: '🇦🇪' },
