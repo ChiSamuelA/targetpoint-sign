@@ -3,9 +3,8 @@ export interface SignatureData {
   role: string
   phone: string
   email: string
-  website: string
   photoBase64: string | null
-  templateId: 'classic' | 'light' | 'bold' | 'mono' | 'jg'
+  templateId: 'jg'
   products: {
     weExport: boolean
     tripnbusiness: boolean

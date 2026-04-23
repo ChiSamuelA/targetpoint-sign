@@ -35,9 +35,12 @@ const PRODUCTS = [
 const TEXT_FIELDS = [
   { field: 'fullName' as const, label: 'Full Name',        icon: User,      placeholder: 'Ahmed Al-Rashidi',          type: 'text',  required: true,  maxLength: 60  },
   { field: 'role'     as const, label: 'Role / Job Title', icon: Briefcase, placeholder: 'Senior Marketing Manager',  type: 'text',  required: true,  maxLength: 80  },
-  { field: 'email'    as const, label: 'Email Address',    icon: Mail,      placeholder: 'ahmed@targetpoint.com',     type: 'email', required: true,  maxLength: undefined },
-  { field: 'website'  as const, label: 'Website',          icon: Globe,     placeholder: 'yourwebsite.com',           type: 'url',   required: false, maxLength: undefined },
 ]
+
+function getUsername(email: string): string {
+  if (!email) return ''
+  return email.split('@')[0]
+}
 
 function isValidEmail(val: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)
@@ -74,6 +77,7 @@ export default function SignatureForm({ data, onChange, onValidationChange }: Pr
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [dialCode, setDialCode]       = useState(() => extractDialCode(data.phone))
   const [localNumber, setLocalNumber] = useState(() => extractLocalNumber(data.phone))
+  const [emailUsername, setEmailUsername] = useState(() => getUsername(data.email))
   const [errors, setErrors]           = useState<Record<string, string>>({})
   const [cropSrc, setCropSrc]         = useState<string | null>(null)
 
@@ -136,6 +140,16 @@ export default function SignatureForm({ data, onChange, onValidationChange }: Pr
   const handleLocalChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setLocalNumber(e.target.value)
     updatePhone(dialCode, e.target.value)
+  }
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value.trim().split('@')[0]
+    setEmailUsername(val)
+    const fullEmail = val ? `${val}@targetpoint.fr` : ''
+    onChange({ ...data, email: fullEmail })
+    
+    if (!val) applyError('email', 'Email username is required')
+    else applyError('email', null)
   }
 
   const inputClass = (key: string, base: string) =>
@@ -201,7 +215,7 @@ export default function SignatureForm({ data, onChange, onValidationChange }: Pr
 
         <div className="h-px bg-gray-100" />
 
-        {/* ── Text Fields (name, role, email, website) ─────────────────────────── */}
+        {/* ── Text Fields (name, role) ─────────────────────────── */}
         {TEXT_FIELDS.map(({ field, label, icon: Icon, placeholder, type, required, maxLength }) => (
           <div key={field}>
             <label className="block text-sm font-medium text-gray-700 mb-1.5">
@@ -220,7 +234,6 @@ export default function SignatureForm({ data, onChange, onValidationChange }: Pr
                     applyError(field, 'This field is required')
                     return
                   }
-                  if (type === 'email') validateEmail(field, val)
                   if (type === 'url')   validateUrl(field, val)
                 }}
                 placeholder={placeholder}
@@ -235,6 +248,32 @@ export default function SignatureForm({ data, onChange, onValidationChange }: Pr
             )}
           </div>
         ))}
+
+        {/* ── Email — name only @targetpoint.fr ─────────────────────────── */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1.5">
+            Email Address <span className="text-red-500 ml-0.5">*</span>
+          </label>
+          <div className="relative flex items-center">
+            <Mail className="absolute left-3 w-4 h-4 text-gray-400 pointer-events-none" />
+            <input
+              type="text"
+              value={emailUsername}
+              onChange={handleEmailChange}
+              placeholder="ahmed"
+              className={cn(
+                'w-full pl-9 pr-[110px] py-2.5 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:border-transparent transition-shadow placeholder:text-gray-300 text-gray-800',
+                errors.email ? 'border-red-400 focus:ring-red-400' : 'border-gray-200 focus:ring-purple-500'
+              )}
+            />
+            <span className="absolute right-3 text-sm font-medium text-gray-400 pointer-events-none bg-white pl-1">
+              @targetpoint.fr
+            </span>
+          </div>
+          {errors.email && (
+            <p className="text-xs text-red-500 mt-1 ml-1">{errors.email}</p>
+          )}
+        </div>
 
         {/* ── Phone — dial code select + local number input ────────────────────── */}
         <div>

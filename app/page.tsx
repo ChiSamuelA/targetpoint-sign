@@ -16,9 +16,8 @@ const defaultData: SignatureData = {
   role: '',
   phone: '',
   email: '',
-  website: '',
   photoBase64: null,
-  templateId: 'classic',
+  templateId: 'jg',
   products: {
     weExport: true,
     tripnbusiness: true,

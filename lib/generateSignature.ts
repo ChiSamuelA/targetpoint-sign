@@ -1,19 +1,9 @@
 import type { SignatureData, SignatureImages } from '@/types/signature'
-import { buildClassic } from './templates/classic'
-import { buildLight }   from './templates/light'
-import { buildBold }    from './templates/bold'
-import { buildMono }    from './templates/mono'
 import { buildJG }      from './templates/jg'
 
 // ── Template router ────────────────────────────────────────────────────────────
 export function buildSignatureHTML(data: SignatureData, images: SignatureImages): string {
-  switch (data.templateId) {
-    case 'light':  return buildLight(data, images)
-    case 'bold':   return buildBold(data, images)
-    case 'mono':   return buildMono(data, images)
-    case 'jg':     return buildJG(data, images)
-    default:       return buildClassic(data, images)
-  }
+  return buildJG(data, images)
 }
 
 // ── Image utilities ────────────────────────────────────────────────────────────
