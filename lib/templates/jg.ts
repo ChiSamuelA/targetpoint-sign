@@ -1,6 +1,6 @@
 // JG — white body, circular gold-bordered photo, indigo name, gold social circles, indigo banner
 import type { SignatureData, SignatureImages } from '@/types/signature'
-import { normalizeUrl, clampText, whatsappHref } from './shared'
+import { clampText, whatsappHref } from './shared'
 
 function contactIconBadge(src: string, alt: string): string {
   return `<table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">
@@ -140,11 +140,11 @@ export function buildJG(data: SignatureData, images: SignatureImages): string {
 
   // ── COLUMN 3: JG Logo (Fixed 160px) ────────────────────────────────────────
   const logoCell = `<td width="160" height="150" valign="middle" align="center"
-    style="width:160px;height:150px;padding:10px;vertical-align:middle;text-align:center;">
+    style="width:160px;height:150px;padding:2px;vertical-align:middle;text-align:center;">
     <a href="https://www.josephinegarrick.com/" target="_blank"
       style="display:block;text-decoration:none;margin:0 auto;">
-      <img src="${images.jgLogo}" width="140"
-        style="display:block;width:140px;height:auto;object-fit:contain;margin:0 auto;" alt="Josephine Garrick LTD">
+      <img src="${images.jgLogo}" width="155"
+        style="display:block;width:155px;height:auto;object-fit:contain;margin:0 auto;" alt="Josephine Garrick LTD">
     </a>
   </td>`
 

@@ -1,7 +1,7 @@
 'use client'
 
 import { useRef, useState } from 'react'
-import { User, Briefcase, Mail, Globe, Upload, X, Link } from 'lucide-react'
+import { User, Briefcase, Mail, Upload, X, Link } from 'lucide-react'
 import { parsePhoneNumber, isValidPhoneNumber } from 'libphonenumber-js'
 import { cn } from '@/lib/utils'
 import type { SignatureData } from '@/types/signature'
@@ -40,10 +40,6 @@ const TEXT_FIELDS = [
 function getUsername(email: string): string {
   if (!email) return ''
   return email.split('@')[0]
-}
-
-function isValidEmail(val: string) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)
 }
 
 // ── Phone parse helpers (used to restore dial-code UI from stored data) ────────
@@ -87,11 +83,6 @@ export default function SignatureForm({ data, onChange, onValidationChange }: Pr
     else delete next[key]
     setErrors(next)
     onValidationChange(Object.keys(next).length === 0)
-  }
-
-  const validateEmail = (key: string, val: string) => {
-    if (val && !isValidEmail(val)) applyError(key, 'Enter a valid email address')
-    else applyError(key, null)
   }
 
   const validateUrl = (key: string, val: string) => {
