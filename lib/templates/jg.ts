@@ -28,8 +28,8 @@ const BRANDS = [
 export function buildJG(data: SignatureData, images: SignatureImages): string {
   const { fullName, role, phone, email, photoBase64, socials } = data
   const hasSocials = !!(socials.linkedin || socials.instagram || socials.facebook)
-  const website = 'https://www.targetpoint.fr/'
-  const websiteLabel = 'www.targetpoint.fr'
+  const website = 'https://www.josephinegarrick.com/'
+  const websiteLabel = 'www.josephinegarrick.com'
 
   // ── COLUMN 1: Photo (Fixed 120px) ──────────────────────────────────────────
   const photoInner = photoBase64
