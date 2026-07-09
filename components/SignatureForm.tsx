@@ -15,6 +15,7 @@ interface Props {
 
 const DIAL_CODES = [
   { code: '+237', flag: '🇨🇲' },
+  { code: '+225', flag: '🇨🇮' },
   { code: '+221', flag: '🇸🇳' },
   { code: '+229', flag: '🇧🇯' },
   { code: '+261', flag: '🇲🇬' },
